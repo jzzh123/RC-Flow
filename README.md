@@ -1,7 +1,9 @@
 # RC-Flow
 This repository is the Python implementation of paper _"[Recursive Flow: A Generative Framework for MIMO Channel Estimation](https://doi.org/10.48550/arXiv.2601.15767)"_
 
-<embed src="Algorithm_Chart.pdf" width="600px" height="500px" type="application/pdf">
+# Algorithm chart
+
+<img width="1128" height="624" alt="image" src="https://github.com/user-attachments/assets/90ecf0c0-03b7-4153-ba8d-74bc69f6c415" />
 
 ## Files in this repo
 `train_flow.py`: The train code, used to train the flow backbone.
@@ -16,7 +18,7 @@ This repository is the Python implementation of paper _"[Recursive Flow: A Gener
 
 `bin`: This directory cotains the channel data.
 
-##Channel data
+## Channel data
 The channel data can be obtained from this repository: _"[score-based-channels](https://github.com/utcsilab/score-based-channels)"_
 
 ## Reference
