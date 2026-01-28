@@ -1,6 +1,3 @@
-This repository is the Python implementation of paper "Recursive Flow: A Generative Framework for MIMO Channel Estimation"
-
-
 # RC-Flow
 This repository is the Python implementation of paper _"[Recursive Flow: A Generative Framework for MIMO Channel Estimation](https://doi.org/10.48550/arXiv.2601.15767)"_
 
