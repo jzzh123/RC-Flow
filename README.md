@@ -1,6 +1,8 @@
 # RC-Flow
 This repository is the Python implementation of paper _"[Recursive Flow: A Generative Framework for MIMO Channel Estimation](https://doi.org/10.48550/arXiv.2601.15767)"_
 
+<embed src="Algorithm_Chart.pdf" width="600px" height="500px" type="application/pdf">
+
 ## Files in this repo
 `train_flow.py`: The train code, used to train the flow backbone.
 
