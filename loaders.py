@@ -10,7 +10,6 @@ class NpyChannelDataset1(Dataset):
 
         self.filename = file_path
         
-        print(f"正在从以下路径加载数据: {self.filename}")
         # try:
         self.channels = np.load(self.filename).astype(np.complex64)
 
@@ -21,11 +20,8 @@ class NpyChannelDataset1(Dataset):
         self.snr_db = config.snr_db
 
         if not(self.channels.ndim == 3):
-            print("数据不是 3D 形状，重整形 (样本数, Nr, Nt)...")
             self.channels = np.reshape(self.channels[:,0,:,:],
                (-1, n_rx, n_tx)) 
-
-        print(f"数据加载完成。形状: {self.channels.shape}")
         # channel_power = np.mean(np.abs(self.channels)**2)
         # self.channel_scale = np.sqrt(channel_power)
         self.channel_scale = np.std(self.channels)
