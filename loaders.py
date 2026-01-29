@@ -30,7 +30,6 @@ class NpyChannelDataset1(Dataset):
         num_samples = self.channels.shape[0]
         num_pilots = config.num_pilots
 
-        #QPSK导频
         pilot_bits_real = 2 * np.random.binomial(1, 0.5, size=(num_samples, n_tx, num_pilots)) - 1
         pilot_bits_imag = 2 * np.random.binomial(1, 0.5, size=(num_samples, n_tx, num_pilots)) - 1
         self.pilots = (pilot_bits_real + 1j * pilot_bits_imag) / np.sqrt(2.0)
