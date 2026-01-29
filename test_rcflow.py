@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 from loaders import NpyChannelDataset1
 
 # ==========================================
-# U-Net Architecture (与训练代码完全一致)
+# U-Net Architecture 
 # ==========================================
 
 class SinusoidalPosEmb(nn.Module):
@@ -162,7 +162,7 @@ def perform_inference(model, Y_cplx, P_cplx, device, gamma, noise_scale, H_true,
                 H0_real = H_t_real - t_curr * u
             H0 = torch.view_as_complex(H0_real.permute(0, 2, 3, 1).contiguous())
             
-            # print(f"\nN1={k}, flowmt",10 * math.log10(torch.mean(torch.sum(torch.abs(H0 - H_true)**2, dim=(-1, -2)) / torch.sum(torch.abs(H_true)**2, dim=(-1, -2)))))
+
             
             # 2. Physics Constraint (Likelihood)
             vt_sq = t_curr**2 / (t_curr**2 + (1 - t_curr)**2 + 1e-6)
@@ -172,7 +172,7 @@ def perform_inference(model, Y_cplx, P_cplx, device, gamma, noise_scale, H_true,
             
             H0_y = torch.bmm(rhs, lhs_inv) #+ args.gamma * kappa_t
             
-            # print(f'N1={k}, 物理约束',10 * math.log10(torch.mean(torch.sum(torch.abs(H0_y - H_true)**2, dim=(-1, -2)) / torch.sum(torch.abs(H_true)**2, dim=(-1, -2)))))
+
             
             # 3. Step
             t_next = (1.0 - (i + 1)*dt)**args.beta
@@ -181,7 +181,6 @@ def perform_inference(model, Y_cplx, P_cplx, device, gamma, noise_scale, H_true,
             H_t = t_next * epsilon + (1 - t_next) * H0_y 
             # H_t = H0_y
             
-            # print(f'N1={k}, 插值',10 * math.log10(torch.mean(torch.sum(torch.abs(H_t - H_true)**2, dim=(-1, -2)) / torch.sum(torch.abs(H_true)**2, dim=(-1, -2)))))
             # err = torch.mean(torch.sum(torch.abs(H_t - H_true)**2, dim=(-1, -2)) / torch.sum(torch.abs(H_true)**2, dim=(-1, -2)))
             # nmse_list.append(10 * math.log10(err.item()))
 
@@ -196,8 +195,8 @@ def perform_inference(model, Y_cplx, P_cplx, device, gamma, noise_scale, H_true,
     np.save(save_dir/f"beta_{args.beta}_snr_{snr_db}.npy", nmse_list)
     plt.figure()
     plt.plot(nmse_list)
-    plt.text(min_idx, min_nmse,             # 坐标位置
-        f"({min_idx+1},{min_nmse:.4f})",    # 显示的内容 (这里显示y值)
+    plt.text(min_idx, min_nmse,            
+        f"({min_idx+1},{min_nmse:.4f})",    
         fontsize=10)
     plt.title(f"SNR {snr_db}dB")
     plt.savefig(save_dir / f"snr_{snr_db}dB_Np{args.np}_epoch{args.epoch}.pdf")
