@@ -158,7 +158,7 @@ class FlowMatchingLoss:
         self.snr_list_db = np.arange(snr_min_db, snr_max_db + snr_step_db, snr_step_db)
         self.time_mu = time_mu
         self.time_sigma = time_sigma
-        self.adaptive_p = adaptive_p  # 新增：控制权重强度
+        self.adaptive_p = adaptive_p  
 
     def sample_time(self, batch_size, device):
         normal_samples = torch.randn(batch_size, device=device) * self.time_sigma + self.time_mu
@@ -191,7 +191,7 @@ class FlowMatchingLoss:
         unweighted_mse = torch.mean(error_norm ** 2)
 
         if self.adaptive_p > 0:
-            # 计算自适应权重：1 / (误差平方 + epsilon)
+
             weights = 1.0 / (error_norm.detach() ** 2 + 1e-3).pow(self.adaptive_p)
             loss = (weights * error_norm ** 2).mean()
         else:
@@ -259,8 +259,8 @@ def main(args):
         model.train()
         for batch in train_dataloader:
             with accelerator.accumulate(model):
-                loss_dict = loss_fn(model, batch)  # 获取字典
-                loss = loss_dict['loss']           # 提取加权后的 Loss 用于反向传播
+                loss_dict = loss_fn(model, batch)  
+                loss = loss_dict['loss']          
                 accelerator.backward(loss)
                 if accelerator.sync_gradients:
                     accelerator.clip_grad_norm_(model.parameters(), 1.0)
@@ -274,7 +274,7 @@ def main(args):
                     ema_p.mul_(0.999).add_(model_p.detach(), alpha=1 - 0.999)
                 
                 if accelerator.is_main_process:
-                    # 记录 unweighted_mse 更有利于观察真实误差水平
+
                     progress_bar.set_postfix({
                         "loss": f"{loss.item():.4f}", 
                         "mse": f"{loss_dict['unweighted_mse'].item():.4f}",
